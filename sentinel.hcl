@@ -1,9 +1,9 @@
 module "tfplan-functions" {
-  source = "tfplan-functions.sentinel"
+  source = "./tfplan-functions.sentinel"
 }
 
 module "tfconfig-functions" {
-  source = "tfconfig-functions.sentinel"
+  source = "./tfconfig-functions.sentinel"
 }
  
 policy "ec2" {
