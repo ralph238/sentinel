@@ -1,0 +1,27 @@
+# This policy uses the Sentinel tfplan/v2 import to require that
+
+# Import the tfplan/v2 import, but use the alias "tfplan"
+import "tfplan/v2" as tfplan
+
+# Import tfplan-functions.sentinel with alias "plan"
+import "tfplan-functions" as plan
+
+# Allowed RDS deletion_protection
+# Include null to allow missing or computed value
+#allowed_values = ["true"]
+
+# Get all RDS deletion_protection
+rdsprotection = plan.find_resources("aws_rds_cluster_instance")
+
+# Filter to RDS instances with violations
+# Warnings will be printed for all violations since the last parameter is true
+# violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(rdsprotection,
+#                         "deletion_protection", allowed_values, true)
+
+violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
+                        "deletion_protection", true, true)       
+
+# Main rule
+main = rule {
+  length(violatingRdsprotectionEncryption["messages"]) is 0
+}
