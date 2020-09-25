@@ -11,7 +11,7 @@ import "tfplan-functions" as plan
 #allowed_values = ["true"]
 
 # Get all RDS deletion_protection
-rdsprotection = plan.find_resources("aws_rds_cluster_instance")
+rdsprotection = plan.find_resources("aws_rds_cluster")
 
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
