@@ -13,4 +13,7 @@ policy "ec2" {
 policy "rds-cluster" {
     enforcement_level = "soft-mandatory"
 }
-
+  
+policy "dynamo-db-encryption" {
+    enforcement_level = "soft-mandatory"
+}
