@@ -14,7 +14,7 @@ import "tfplan-functions" as plan
 rdsprotection = plan.find_resources("aws_dynamodb_table")
 
 # Filter to RDS instances with violations
-# Warnings will be printed for all violations since the last parameter is true
+# Warnings will be printed for all violations since the last parameter is enabled
 # violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(rdsprotection,
 #                         "server_side_encryption", allowed_values, true)
 
