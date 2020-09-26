@@ -16,7 +16,7 @@ rdsprotection = plan.find_resources("aws_dynamodb_table")
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
 # violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(rdsprotection,
-#                         "server_side_encryption", allowed_values, true)
+#                         "server_side_encryption", allowed_values,  enabled = "true")
 
 violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
                         "server_side_encryption", true, true)       
