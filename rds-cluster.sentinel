@@ -1,6 +1,3 @@
-# Import tfplan-functions.sentinel with alias "plan"
-import "tfplan-functions" as plan
-
 # RDS Cluster deletion_protection
 # Include null to allow missing or computed value
 #allowed_values = ["true"]
