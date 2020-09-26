@@ -14,7 +14,7 @@ allLambdaFunctions = plan.find_resources("aws_dynamodb_table")
 
 # Lambda functions that have not set a KMS key
 LambdasWithoutKMSKey = plan.filter_attribute_is_value(allLambdaFunctions,
-                        "server_side_encryption", null, true)
+                        "server_side_encryption", true)
 # Main rule
 validated = length(LambdasWithoutKMSKey["messages"]) is 0 
      
