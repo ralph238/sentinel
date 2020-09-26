@@ -8,7 +8,7 @@ import "tfplan-functions" as plan
 
 # Require dynamodb encryption server_side_encryption
 # Include null to allow missing or computed value
-#allowed_values = ["true"]
+#allowed_values = [" enabled = "true" "]
 
 # Require dynamodb encryption server_side_encryption
 rdsprotection = plan.find_resources("aws_dynamodb_table")
