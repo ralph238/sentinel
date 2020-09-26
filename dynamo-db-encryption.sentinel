@@ -1,4 +1,3 @@
-
 # This policy uses the Sentinel tfplan/v2 import to require that
 
 # Import the tfplan/v2 import, but use the alias "tfplan"
@@ -9,7 +8,7 @@ import "tfplan-functions" as plan
 
 # Require dynamodb encryption server_side_encryption
 # Include null to allow missing or computed value
-#allowed_values = ["true, enabled ="true""]
+#allowed_values = ["true"]
 
 # Require dynamodb encryption server_side_encryption
 rdsprotection = plan.find_resources("aws_dynamodb_table")
@@ -20,7 +19,7 @@ rdsprotection = plan.find_resources("aws_dynamodb_table")
 #                         "server_side_encryption", allowed_values, true)
 
 violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
-                        "server_side_encryption", true, true)       
+                        "server_side_encryption", true)       
 
 # Main rule
 main = rule {
