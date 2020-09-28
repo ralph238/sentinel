@@ -17,3 +17,7 @@ policy "rds-cluster" {
 policy "dynamo-db-encryption" {
     enforcement_level = "soft-mandatory"
 }
+
+policy "rds-deletion-protection" {
+    enforcement_level = "soft-mandatory"
+}
