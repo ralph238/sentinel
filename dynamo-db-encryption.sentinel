@@ -1,26 +1,25 @@
-  
 # This policy uses the Sentinel tfplan/v2 import to require that
 
 # Import the tfplan/v2 import, but use the alias "tfplan"
 import "tfplan/v2" as tfplan
 
-# Import tfplan-functions.sentinel with alias "plan"
+# Import common-functions/tfplan-functions.sentinel with alias "plan"
 import "tfplan-functions" as plan
 
-# Enable RDS Cluster deletion_protection
+# Require dynamodb encryption server_side_encryption
 # Include null to allow missing or computed value
-allowed_values = ["enabled = true, true, enabled=true"]
+allowed_values = ["true"]
 
-# Get RDS Cluster deletion_protection
-rdsprotection = plan.find_resources("aws_rds_cluster")
+# Require dynamodb encryption server_side_encryption
+rdsprotection = plan.find_resources("aws_dynamodb_table")
 
-# Filter to RDS cluster with violations
+# Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
-violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(rdsprotection,
-                         "deletion_protection", allowed_values, true)
+# violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(rdsprotection,
+#                         "server_side_encryption", allowed_values, true)
 
-#violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
-#                       "deletion_protection", true, true)       
+violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
+                        "server_side_encryption", true, true)       
 
 # Main rule
 main = rule {
