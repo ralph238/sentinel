@@ -14,7 +14,7 @@ allVPCs = plan.find_resources("aws_dynamodb_table")
 # The first finds VPCs with enable_dns_support not set to true
 # The second finds VPCs with enable_dns_hostnames not set to true
 violatingSupportVPCs = plan.filter_attribute_is_not_value(allVPCs,
-                        "server_side_encryption", true, true)
+                        "server_side_encryption", enabled     = true, true)
 
 # Main rule
 validated = length(violatingSupportVPCs["messages"]) is 0 and length(violatingHostnameVPCs["messages"]) is 0
