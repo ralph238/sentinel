@@ -5,6 +5,7 @@
 # If parent is a resource, you can pass it in the form rc.change.after or just rc.
 # child should be a string representing a block of parent
 # that contains a list of objects.
+main = rule {
 find_blocks = func(server_side_encryption, true) {
   # Use parent.change.after if it exists
   if (types.type_of(server_side_encryption) is "map" and
@@ -23,4 +24,6 @@ find_blocks = func(server_side_encryption, true) {
       return [Bad]
     }
   }
+}
+
 }
