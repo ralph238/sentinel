@@ -16,7 +16,7 @@ allRDSInstances = plan.find_resources("aws_dynamodb_table")
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
 violatingRDSInstances = plan.filter_attribute_is_not_value(allRDSInstances,
-                        "server_side_encryption", enabled = true, true)
+                        "server_side_encryption", enabled=true, true)
 
 # Main rule
 main = rule {
