@@ -8,7 +8,7 @@ import "tfplan-functions" as plan
 
 # Allowed RDS engines
 # Include "null" to allow missing or computed values
-allowed_engines = ["enabled = true"]
+
 
 # Get all RDS instances
 allRDSInstances = plan.find_resources("aws_dynamodb_table")
@@ -16,7 +16,7 @@ allRDSInstances = plan.find_resources("aws_dynamodb_table")
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
 violatingRDSInstances = plan.filter_attribute_not_in_list(allRDSInstances,
-                        "engine", allowed_engines, true)
+                        "server_side_encryption", enabled = true, true)
 
 # Main rule
 main = rule {
