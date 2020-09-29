@@ -6,20 +6,20 @@ import "tfplan/v2" as tfplan
 # Import common-functions/tfplan-functions.sentinel with alias "plan"
 import "tfplan-functions" as plan
 
-# Allowed RDS deletion_protection
+# Allowed DyanmoDb server_side_encryption
 # Include null to allow missing or computed value
 #allowed_values = ["true"]
 
-# Get all RDS deletion_protection
+# Get all DyanmoDb server_side_encryption
 dynamoencryption = plan.find_resources("aws_dynamodb_table")
 
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
 # violatingDynamoEncryption = plan.filter_attribute_not_in_list(dynamoencryption,
-#                         "enabled", allowed_values, true)
+#                         "server_side_encryption", allowed_values, true)
 
 violatingDynamoEncryption = plan.filter_attribute_is_not_value(dynamoencryption,
-                        "server_side_encryption", {enabled:"true"}, true)       
+                        "server_side_encryption", true, true)       
 
 # Main rule
 main = rule {
