@@ -11,7 +11,7 @@ import "tfplan-functions" as plan
 #allowed_values = ["true"]
 
 # Get all RDS deletion_protection
-dynamoencryption = plan.find_resources("server_side_encryption")
+dynamoencryption = plan.find_resources("aws_dynamodb_table")
 
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
