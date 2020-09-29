@@ -15,7 +15,7 @@ rdsprotection = plan.find_resources("aws_db_instance")
 
 
 violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
-                        "deletion_protection", true, true)       
+                        "deletion_protection", false, true)       
 
 # Main rule
 main = rule {
