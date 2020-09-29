@@ -14,7 +14,9 @@ find_blocks = func(server_side_encryption, true) {
     if types.type_of(server_side_encryption.change.after[true] else null) is "list" {
       return server_side_encryption.change.after[true]
     } else {
-      return []
+      return [main = rule {
+  length(violatingDynamoEncryption["messages"]) is 0
+}]
     }
   } else {
     if types.type_of(server_side_encryption[true] else null) is "list" {
