@@ -19,7 +19,7 @@ dynamoencryption = plan.find_resources("aws_dynamodb_table")
 #                         "enabled", allowed_values, true)
 
 violatingDynamoEncryption = plan.filter_attribute_is_not_value(dynamoencryption,
-                        "enabled", true, true)       
+                        "server_side_encryption", [], true)       
 
 # Main rule
 main = rule {
