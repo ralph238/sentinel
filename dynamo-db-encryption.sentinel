@@ -25,7 +25,7 @@ validations = validate_private_acl_and_kms_encryption()
 
 # KMS Encryption Rule
 is_server_side_encryption = rule {
-    validations["server_side_encryption"]
+    validations["enabled"]
 }
 
 # Main rule
