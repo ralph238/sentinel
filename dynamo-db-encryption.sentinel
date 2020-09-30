@@ -10,7 +10,7 @@ validate_private_acl_and_kms_encryption = func() {
     result = {
         "enabled":          true  ,
     }
-    s3_buckets = find_resources_from_plan("aws_dynamodb_table")
+    s3_buckets = plan.find_resources("aws_dynamodb_table")
     # Iterate over resource instances and check that S3 buckets
     # have private ACL and are encrypted by a KMS key
     # If an S3 bucket is not encrypted, set result["server_side_encryption"] to false
