@@ -6,9 +6,9 @@ import "tfplan/v2" as tfplan
 # Import common-functions/tfplan-functions.sentinel with alias "plan"
 import "tfplan-functions" as plan
 
-validate_ec2_instance_types = func(enabled=true) {
-    validated = true
-    aws_dynamodb_table = find_resources_from_plan("aws_dynamodb_table")
+allowed_values = ["enabled=true"]
+
+    aws_dynamodb_table = plan.find_resources("aws_dynamodb_table")
     for aws_dynamodb_table as address, r {
         # Determine if the attribute is computed
         if r.diff["server_side_encryption"].computed else false is true {
