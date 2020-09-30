@@ -23,9 +23,9 @@ allowed_values = ["enabled=true"]
                 validated = false
             }
         }
-    }
+    
     return validated
-
+}
 
 # Main rule
 main = rule {
