@@ -1,32 +1,25 @@
-# This policy uses the Sentinel tfplan/v2 import to require that
-
-# Import the tfplan/v2 import, but use the alias "tfplan"
-import "tfplan/v2" as tfplan
-
-# Import common-functions/tfplan-functions.sentinel with alias "plan"
-import "tfplan-functions" as plan
-
-# Allowed DyanmoDb server_side_encryption
-# Include null to allow missing or computed value
-#allowed_values = ["true"]
-
-# Get all DyanmoDb server_side_encryption
-dynamoencryption = plan.find_resources("aws_dynamodb_table")
-
-variable "users" {
-    type    = list
-    default = ["root", "user1", "user2"]
+validate_ec2_instance_types = func(enabled=true) {
+    validated = true
+    aws_dynamodb_table = find_resources_from_plan("aws_dynamodb_table")
+    for aws_dynamodb_table as address, r {
+        # Determine if the attribute is computed
+        if r.diff["server_side_encryption"].computed else false is true {
+            print("EC2 instance", address,
+                  "has attribute, server_side_encryption, that is computed.")
+        } else {
+            # Validate that each instance has allowed value
+            if (r.applied.server_side_encryption else "") not in allowed_types {
+                print("EC2 instance", address, "has server_side_encryption",
+                    r.applied.server_side_encryption, "that is not in the allowed list:",
+                    allowed_types)
+                validated = false
+            }
+        }
+    }
+    return validated
 }
-
-# Filter to RDS instances with violations
-# Warnings will be printed for all violations since the last parameter is true
-# violatingDynamoEncryption = plan.filter_attribute_not_in_list(dynamoencryption,
-#                         "server_side_encryption", allowed_values, true)
-
-violatingDynamoEncryption = plan.filter_attribute_is_not_value(dynamoencryption,
-                        "server_side_encryption", true, true)       
 
 # Main rule
 main = rule {
-  length(violatingDynamoEncryption["messages"]) is 0
+  length(validate_ec2_instance_types["messages"]) is 0
 }
