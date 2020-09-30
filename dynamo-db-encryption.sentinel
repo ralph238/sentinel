@@ -18,11 +18,13 @@ dynamotable = plan.find_resources("aws_dynamodb_table")
 # violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(dynamotable,
 #                         "server_side_encryption", allowed_values, true)
 
+# Dynamo table that has not enabled server side encryption
 ViolatingEncryption = plan.filter_attribute_is_not_value(dynamotable,
                         "server_side_encryption.0.enabled", true, true)      
                         
-ViolatingKmsEncryption = plan.filter_attribute_is_not_value(dynamotable,
-                        "server_side_encryption.1.enabled", true, true)
+# Dynamo table that have not set a KMS key                
+ViolatingKmsEncryption = plan.filter_attribute_is_value(dynamotable,
+                        "server_side_encryption.1.enabled", null, true)
 
 # Main rule
 validated = length(ViolatingEncryption["messages"]) is 0 and
