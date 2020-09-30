@@ -12,6 +12,8 @@ import "tfplan-functions" as plan
 # If parent is a resource, you can pass it in the form rc.change.after or just rc.
 # child should be a string representing a block of parent
 # that contains a list of objects.
+
+main = rule {
 find_blocks = func(server_side_encryption, enabled) {
   # Use parent.change.after if it exists
   if (types.type_of(server_side_encryption) is "map" and
@@ -32,8 +34,9 @@ find_blocks = func(server_side_encryption, enabled) {
   }
 }
 
+}
 
 # Main rule
-main = rule {
-  length(find_blocks["messages"]) is 0
-}
+#main = rule {
+ # length(find_blocks["messages"]) is 0
+#}
