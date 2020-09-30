@@ -1,3 +1,11 @@
+# This policy uses the Sentinel tfplan/v2 import to require that
+
+# Import the tfplan/v2 import, but use the alias "tfplan"
+import "tfplan/v2" as tfplan
+
+# Import common-functions/tfplan-functions.sentinel with alias "plan"
+import "tfplan-functions" as plan
+
 validate_ec2_instance_types = func(enabled=true) {
     validated = true
     aws_dynamodb_table = find_resources_from_plan("aws_dynamodb_table")
