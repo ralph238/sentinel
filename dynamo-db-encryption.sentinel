@@ -6,25 +6,34 @@ import "tfplan/v2" as tfplan
 # Import common-functions/tfplan-functions.sentinel with alias "plan"
 import "tfplan-functions" as plan
 
-validate_private_acl_and_kms_encryption = func() {
-    result = {
-        "enabled":          true  ,
+# Find all blocks of a specific type from a resource using the tfplan/v2 import.
+# parent should be a single resource or block of a resource or a data source
+# or a block of a data source.
+# If parent is a resource, you can pass it in the form rc.change.after or just rc.
+# child should be a string representing a block of parent
+# that contains a list of objects.
+find_blocks = func(server_side_encryption, enabled) {
+  # Use parent.change.after if it exists
+  if (types.type_of(server_side_encryption) is "map" and
+     "change" in keys(server_side_encryption)) and
+     (types.type_of(server_side_encryption.change) is "map" and
+     "after" in keys(server_side_encryption.change)) {
+    if types.type_of(server_side_encryption.change.after[enabled] else null) is "list" {
+      return server_side_encryption.change.after[enabled]
+    } else {
+      return []
     }
-    s3_buckets = plan.find_resources("aws_dynamodb_table")
-    # Iterate over resource instances and check that S3 buckets
-    # have private ACL and are encrypted by a KMS key
-    # If an S3 bucket is not encrypted, set result["server_side_encryption"] to false
-    for s3_buckets as joined_path, resource_map {
-        #...
+  } else {
+    if types.type_of(server_side_encryption[enabled] else null) is "list" {
+  	  return server_side_encryption[enabled]
+    } else {
+      return []
     }
-    return result
+  }
 }
-
-# Call the validation function
-validations = validate_private_acl_and_kms_encryption()
 
 
 # Main rule
 main = rule {
-  length(validate_private_acl_and_kms_encryption["messages"]) is 0
+  length(find_blocks["messages"]) is 0
 }
