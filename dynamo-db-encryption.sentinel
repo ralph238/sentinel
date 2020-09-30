@@ -30,10 +30,5 @@ is_server_side_encryption = rule {
 
 # Main rule
 main = rule {
-    is_server_side_encryption
-}
-
-# Main rule
-main = rule {
-  length(validate_ec2_instance_types["messages"]) is 0
+  length(is_server_side_encryption["messages"]) is 0
 }
