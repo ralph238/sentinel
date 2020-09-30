@@ -6,22 +6,27 @@ import "tfplan/v2" as tfplan
 # Import common-functions/tfplan-functions.sentinel with alias "plan"
 import "tfplan-functions" as plan
 
-# Require dynamodb encryption server_side_encryption
+# Require dynamo kms and server encryption server_side_encryption
 # Include null to allow missing or computed value
 #allowed_values = ["true"]
 
-# Require dynamodb encryption server_side_encryption
-encryptedkms = plan.find_resources("aws_dynamodb_table")
+# Require dynamo kms and server encryption server_side_encryption
+dynamotable = plan.find_resources("aws_dynamodb_table")
 
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
-# violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(encryptedkms,
+# violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(dynamotable,
 #                         "server_side_encryption", allowed_values, true)
 
-ViolatingKmsEncryption = plan.filter_attribute_is_not_value(encryptedkms,
-                        "server_side_encryption.0.enabled", true, true)       
+ViolatingEncryption = plan.filter_attribute_is_not_value(dynamotable,
+                        "server_side_encryption.0.enabled", true, true)      
+                        
+ViolatingKmsEncryption = plan.filter_attribute_is_not_value(dynamotable,
+                        "server_side_encryption.1.enabled", true, true)
 
 # Main rule
+validated = length(ViolatingEncryption["messages"]) is 0 and
+            length(ViolatingKmsEncryption["messages"]) is 0
 main = rule {
-  length(ViolatingKmsEncryption["messages"]) is 0
+  validated
 }
