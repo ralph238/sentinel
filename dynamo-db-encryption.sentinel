@@ -24,7 +24,7 @@ ViolatingEncryption = plan.filter_attribute_is_not_value(dynamotable,
                         
 # Dynamo table that have not set a KMS key                
 ViolatingKmsEncryption = plan.filter_attribute_is_value(dynamotable,
-                        "server_side_encryption.1.enabled", null, true)
+                        "server_side_encryption.1.kms_key_arn", null, true)
 
 # Main rule
 validated = length(ViolatingEncryption["messages"]) is 0 and
