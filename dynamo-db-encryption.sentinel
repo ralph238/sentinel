@@ -6,7 +6,7 @@ import "tfplan/v2" as tfplan
 # Import common-functions/tfplan-functions.sentinel with alias "plan"
 import "tfplan-functions" as plan
 
-allowed_values = ["enabled=true"]
+allowed_types = ["enabled=true"]
 
     aws_dynamodb_table = plan.find_resources("aws_dynamodb_table")
     for aws_dynamodb_table as address, r {
