@@ -13,6 +13,11 @@ import "tfplan-functions" as plan
 # Get all DyanmoDb server_side_encryption
 dynamoencryption = plan.find_resources("aws_dynamodb_table")
 
+variable "users" {
+    type    = list
+    default = ["root", "user1", "user2"]
+}
+
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
 # violatingDynamoEncryption = plan.filter_attribute_not_in_list(dynamoencryption,
