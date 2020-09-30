@@ -1,30 +1,27 @@
-# Find all blocks of a specific type from a resource using the tfplan/v2 import.
-# parent should be a single resource or block of a resource or a data source
-# or a block of a data source.
-# If parent is a resource, you can pass it in the form rc.change.after or just rc.
-# child should be a string representing a block of parent
-# that contains a list of objects.
-find_blocks = func(parent, child) {
-  # Use parent.change.after if it exists
-  if (types.type_of(parent) is "map" and
-     "change" in keys(parent)) and
-     (types.type_of(parent.change) is "map" and
-     "after" in keys(parent.change)) {
-    if types.type_of(parent.change.after[child] else null) is "list" {
-      return parent.change.after[child]
-    } else {
-      return []
-    }
-  } else {
-    if types.type_of(parent[child] else null) is "list" {
-  	  return parent[child]
-    } else {
-      return []
-    }
-  }
-}
+# This policy uses the Sentinel tfplan/v2 import to require that
+
+# Import the tfplan/v2 import, but use the alias "tfplan"
+import "tfplan/v2" as tfplan
+
+# Import common-functions/tfplan-functions.sentinel with alias "plan"
+import "tfplan-functions" as plan
+
+# Require dynamodb encryption server_side_encryption
+# Include null to allow missing or computed value
+#allowed_values = ["true"]
+
+# Require dynamodb encryption server_side_encryption
+rdsprotection = plan.find_resources("aws_dynamodb_table")
+
+# Filter to RDS instances with violations
+# Warnings will be printed for all violations since the last parameter is true
+# violatingRdsprotectionEncryption = plan.filter_attribute_not_in_list(rdsprotection,
+#                         "server_side_encryption", allowed_values, true)
+
+violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
+                        "server_side_encryption", true, true)       
 
 # Main rule
-#main = rule {
- # length(find_blocks["messages"]) is 0
-#}
+main = rule {
+  length(violatingRdsprotectionEncryption["messages"]) is 0
+}
