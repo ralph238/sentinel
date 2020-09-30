@@ -8,7 +8,7 @@ import "tfplan-functions" as plan
 
 validate_private_acl_and_kms_encryption = func() {
     result = {
-        "enabled":          true  
+        "enabled":          true  ,
     }
     s3_buckets = find_resources_from_plan("aws_dynamodb_table")
     # Iterate over resource instances and check that S3 buckets
