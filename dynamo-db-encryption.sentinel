@@ -23,10 +23,6 @@ validate_private_acl_and_kms_encryption = func() {
 # Call the validation function
 validations = validate_private_acl_and_kms_encryption()
 
-# KMS Encryption Rule
-is_server_side_encryption = rule {
-    validations["enabled"]
-}
 
 # Main rule
 main = rule {
