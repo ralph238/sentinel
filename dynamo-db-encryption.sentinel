@@ -8,23 +8,18 @@ import "tfplan-functions" as plan
 
 # Allowed DyanmoDb server_side_encryption
 # Include null to allow missing or computed value
-#allowed_values = ["enabled=true"]
+#allowed_values = ["true"]
 
 # Get all DyanmoDb server_side_encryption
-#dynamoencryption = plan.find_resources("aws_dynamodb_table")
+dynamoencryption = plan.find_resources("aws_dynamodb_table")
 
 # Filter to RDS instances with violations
 # Warnings will be printed for all violations since the last parameter is true
 # violatingDynamoEncryption = plan.filter_attribute_not_in_list(dynamoencryption,
- #                      "server_side_encryption", allowed_values, true)
+#                         "server_side_encryption", allowed_values, true)
 
-violatingDynamoEncryption = filter tfplan.resource_changes as _, rc {
-    rc.type is “aws_dynamodb_table” and
-    rc.mode is “managed” and
-    (rc.change.actions contains “create” or rc.change.actions
-    contains “update”) and
-    rc.change.after.server_side_encryption.encryption in [“true”]
-}
+violatingDynamoEncryption = plan.filter_attribute_is_not_value(dynamoencryption,
+                        "server_side_encryption", true, true)       
 
 # Main rule
 main = rule {
