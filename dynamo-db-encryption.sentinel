@@ -19,7 +19,7 @@ rdsprotection = plan.find_resources("aws_dynamodb_table")
 #                         "server_side_encryption", allowed_values, true)
 
 violatingRdsprotectionEncryption = plan.filter_attribute_is_not_value(rdsprotection,
-                        "server_side_encryption","[{enabled: true}]", true)       
+                        "server_side_encryption","[{enabled= true}]", true)       
 
 # Main rule
 main = rule {
